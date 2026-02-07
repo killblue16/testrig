@@ -15913,3 +15913,34 @@ if (document.readyState == "complete") {
     hook_load_if_not_ready();
   });
 }
+// === Tiny finder by killblue, something0dlyrandom ===
+
+(function(){
+  const checks = [
+    { name: "Twofish encrypt block", test: () => typeof encrypt === 'function' || /encryptBlock/i.test(encrypt?.toString?.() || '') },
+    { name: "key schedule / whitening", test: () => /whiten|keySchedule|roundKey/i.test(Object.keys(window).join(' ') + Object.keys(globalThis||{}).join(' ')) },
+    { name: "GCM / AEAD mode", test: () => typeof Zn === 'function' || /GCM|Galois|tag/i.test(Zn?.toString?.() || '') },
+    { name: "CFB stream mode", test: () => /CFB|CipherFeedback/i.test(pn?.toString?.() || '') },
+    { name: "PGP packet parser", test: () => /parsePacket|packetType|SEIP|AEAD/i.test(bo?.toString?.() || '') },
+    { name: "encrypt pipeline / pipe", test: () => /pipe\s*\(|encrypt\s*\(/i.test(U?.toString?.() || '') || /publicKeys|sessionKey/i.test(window?.openpgp?.encrypt?.toString?.() || '') },
+    { name: "RSA encrypt or sign", test: () => /rsaEncrypt|pkcs1|rsa\.encrypt/i.test(nn?.toString?.() || '') },
+    { name: "signature verify", test: () => /verifySignature|checkSig/i.test(Xn?.toString?.() || '') },
+    { name: "String.fromCharCode usage", test: () => /fromCharCode/.test(code || document?.scripts?.[document.scripts.length-1]?.textContent || '') }
+  ];
+
+  console.log("=== PGP/Crypto presence check (runtime) ===");
+  let foundAny = false;
+
+  checks.forEach(({name, test}) => {
+    const ok = !!test();
+    console.log(`${ok ? '✓' : '✗'} ${name.padEnd(28)} → ${ok ? 'found' : 'not detected'}`);
+    if (ok) foundAny = true;
+  });
+
+  if (!foundAny) {
+    console.log("\nNo PGP/crypto patterns detected in current scope.");
+  } else {
+    console.log("\nAt least one PGP/crypto-related pattern was located.");
+  }
+  console.log("=======================================");
+})();
